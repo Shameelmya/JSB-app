@@ -1,0 +1,363 @@
+{
+  "entities": {
+    "Member": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Member",
+      "type": "object",
+      "description": "Represents a member of the Mahallu Bank.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the member."
+        },
+        "accountNumber": {
+          "type": "string",
+          "description": "The member's account number."
+        },
+        "name": {
+          "type": "string",
+          "description": "The member's name."
+        },
+        "houseNumber": {
+          "type": "string",
+          "description": "The member's house number."
+        },
+        "address": {
+          "type": "string",
+          "description": "The member's address."
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "The member's phone number."
+        },
+        "whatsappNumber": {
+          "type": "string",
+          "description": "The member's WhatsApp number."
+        },
+        "blockId": {
+          "type": "string",
+          "description": "Reference to Block. (Relationship: Block 1:N Member)"
+        },
+        "clusterId": {
+          "type": "string",
+          "description": "Reference to Cluster. (Relationship: Cluster 1:N Member)"
+        },
+        "totalIn": {
+          "type": "number",
+          "description": "Total amount of cash-in transactions for the member."
+        },
+        "totalOut": {
+          "type": "number",
+          "description": "Total amount of cash-out transactions for the member."
+        },
+        "balance": {
+          "type": "number",
+          "description": "Current balance of the member's account."
+        },
+        "hasPaidRegistrationFee": {
+          "type": "boolean",
+          "description": "Indicates if the member has paid the one-time registration fee."
+        }
+      },
+      "required": [
+        "id",
+        "accountNumber",
+        "name",
+        "houseNumber",
+        "blockId",
+        "clusterId",
+        "hasPaidRegistrationFee"
+      ]
+    },
+    "Block": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Block",
+      "type": "object",
+      "description": "Represents a block in the Mahallu Bank system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the block."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the block."
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "Cluster": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Cluster",
+      "type": "object",
+      "description": "Represents a cluster within a block.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the cluster."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the cluster (A, B, C, D)."
+        },
+        "blockId": {
+          "type": "string",
+          "description": "Reference to Block. (Relationship: Block 1:N Cluster)"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "blockId"
+      ]
+    },
+    "Transaction": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Transaction",
+      "type": "object",
+      "description": "Represents a cash-in or cash-out transaction.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the transaction."
+        },
+        "memberId": {
+          "type": "string",
+          "description": "Reference to Member. (Relationship: Member 1:N Transaction)"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of transaction ('in' or 'out')."
+        },
+        "amount": {
+          "type": "number",
+          "description": "The amount of the transaction."
+        },
+        "date": {
+          "type": "string",
+          "description": "The date of the transaction.",
+          "format": "date-time"
+        },
+        "remarks": {
+          "type": "string",
+          "description": "Optional remarks for the transaction."
+        }
+      },
+      "required": [
+        "id",
+        "memberId",
+        "type",
+        "amount",
+        "date"
+      ]
+    },
+    "AdminTransaction": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AdminTransaction",
+      "type": "object",
+      "description": "Represents a transaction for the admin account, like fees.",
+      "properties": {
+        "id": { "type": "string" },
+        "memberId": { "type": "string", "description": "ID of the member who was charged." },
+        "type": { "type": "string", "enum": ["registration_fee", "passbook_fee"] },
+        "amount": { "type": "number" },
+        "date": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "memberId", "type", "amount", "date"]
+    },
+    "BankTransaction": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "BankTransaction",
+      "type": "object",
+      "description": "Represents a real-world transaction with an external bank.",
+      "properties": {
+        "id": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "type": { "type": "string", "enum": ["deposit", "withdrawal"] },
+        "transacterName": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "amount": { "type": "number" },
+        "transactionNumber": { "type": "string" },
+        "remarks": { "type": "string" }
+      },
+      "required": ["id", "date", "type", "transacterName", "amount"]
+    },
+    "Admin": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Admin",
+      "type": "object",
+      "description": "Represents an admin user with access to the system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the admin user."
+        },
+        "email": {
+          "type": "string",
+          "description": "The admin user's email address.",
+          "format": "email"
+        }
+      },
+      "required": [
+        "id",
+        "email"
+      ]
+    },
+    "SMSSettings": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "SMSSettings",
+      "type": "object",
+      "description": "Stores the SMS API settings for the application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the SMS settings."
+        },
+        "api_key": {
+          "type": "string",
+          "description": "The SMS API key."
+        },
+        "senderId": {
+          "type": "string",
+          "description": "The SMS sender ID."
+        },
+        "serviceProvider": {
+          "type": "string",
+          "description": "The SMS service provider (e.g., Fast2SMS, MSG91)."
+        }
+      },
+      "required": [
+        "id",
+        "api_key",
+        "senderId",
+        "serviceProvider"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/roles_admin/{uid}",
+        "definition": {
+          "entityName": "Admin",
+          "schema": {
+            "$ref": "#/backend/entities/Admin"
+          },
+          "description": "Collection of admin user IDs. Existence of a document indicates admin role.",
+          "params": [
+            {
+              "name": "uid",
+              "description": "The Firebase Auth UID of the admin user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/blocks/{blockId}",
+        "definition": {
+          "entityName": "Block",
+          "schema": {
+            "$ref": "#/backend/entities/Block"
+          },
+          "description": "Collection of blocks.",
+          "params": [
+            {
+              "name": "blockId",
+              "description": "The unique identifier of the block."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/clusters/{clusterId}",
+        "definition": {
+          "entityName": "Cluster",
+          "schema": {
+            "$ref": "#/backend/entities/Cluster"
+          },
+          "description": "Collection of clusters. Includes `blockId` for reverse lookup and efficient querying.",
+          "params": [
+            {
+              "name": "clusterId",
+              "description": "The unique identifier of the cluster."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/members/{memberId}",
+        "definition": {
+          "entityName": "Member",
+          "schema": {
+            "$ref": "#/backend/entities/Member"
+          },
+          "description": "Collection of members. Includes denormalized `blockId` and `clusterId` for authorization independence.",
+          "params": [
+            {
+              "name": "memberId",
+              "description": "The unique identifier of the member."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/transactions/{transactionId}",
+        "definition": {
+          "entityName": "Transaction",
+          "schema": {
+            "$ref": "#/backend/entities/Transaction"
+          },
+          "description": "Collection of transactions. Includes `memberId` for efficient querying.",
+          "params": [
+            {
+              "name": "transactionId",
+              "description": "The unique identifier of the transaction."
+            }
+          ]
+        }
+      },
+       {
+        "path": "/adminTransactions/{transactionId}",
+        "definition": {
+          "entityName": "AdminTransaction",
+          "schema": { "$ref": "#/backend/entities/AdminTransaction" },
+          "description": "Log of all fees collected by the admin."
+        }
+      },
+      {
+        "path": "/bankTransactions/{transactionId}",
+        "definition": {
+          "entityName": "BankTransaction",
+          "schema": { "$ref": "#/backend/entities/BankTransaction" },
+          "description": "Admin's private log of real-world bank transactions."
+        }
+      },
+      {
+        "path": "/sms_settings/{documentId}",
+        "definition": {
+          "entityName": "SMSSettings",
+          "schema": {
+            "$ref": "#/backend/entities/SMSSettings"
+          },
+          "description": "Collection for storing SMS settings. Only one document should exist. The documentId should be `default`.",
+          "params": [
+            {
+              "name": "documentId",
+              "description": "The document ID. It is recommended to have the value as 'default'."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to balance the application's requirements for secure admin-only access, efficient data retrieval for reporting, and real-time SMS notifications. It prioritizes authorization independence to enable robust security rules and atomic operations. The structure segregates data types into distinct collections to simplify security management.\n\n**Authorization Independence:**\nTo eliminate the need for `get()` calls in security rules and enable atomic operations, key authorization data is denormalized. Specifically, the `blocks` and `clusters` to which a `member` belongs are represented in the `member` document itself. Similarly, admin roles are managed through a dedicated `/roles_admin/{uid}` collection.\n\n**QAPs (Rules Are Not Filters):**\nThe structure supports secure `list` operations by enforcing consistent security requirements within each collection. For example, only authenticated admins can access the `/blocks`, `/clusters`, and `/members` collections. The use of dedicated collections like `/roles_admin/{uid}` allows for efficient role-based access control.\n\n**Structure:**\n\n*   `/roles_admin/{uid}`: This collection stores admin role information based on UID, which removes reliance on custom claims and simplifies security rules.\n*   `/blocks/{blockId}`: Stores block information. No subcollections for authorization independence.\n*   `/clusters/{clusterId}`: Stores cluster information. Includes `blockId` for reverse lookup, but security is still enforced independently.\n*   `/members/{memberId}`: Stores member information. Contains `blockId` and `clusterId` to avoid needing to query parent documents for authorization. This is critical for authorization independence.\n*   `/transactions/{transactionId}`: Stores transaction information, includes `memberId`. Because admins manage everything, there's no need to nest transactions under members for authorization. This simplifies rules and queries.\n*   `/adminTransactions/{transactionId}`: Stores admin fee transactions.\n*   `/bankTransactions/{transactionId}`: Stores the admin's private bank transaction log.\n*   `/sms_settings/{documentId}`: Collection to store SMS settings. Only one document needed, so documentId is fixed (e.g., `default`).\n\nThe error reported by NextJS, \"Could not reach Cloud Firestore backend,\" suggests a client-side connectivity issue. However, confirming security rule correctness and data structure optimization ensures it's not a permission problem."
+  }
+}
