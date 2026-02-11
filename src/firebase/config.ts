@@ -1,8 +1,20 @@
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
+
 export const firebaseConfig = {
-  "projectId": "studio-3903073715-2ce3f",
-  "appId": "1:348343782581:web:920e1480f91663c1b982fc",
-  "apiKey": "AIzaSyDd1g-rNUhhwWe6lWg2RgqMGK0m7pVHIsY",
-  "authDomain": "studio-3903073715-2ce3f.firebaseapp.com",
-  "measurementId": "",
-  "messagingSenderId": "348343782581"
+  apiKey: "AIzaSyBbUp2TMP3_HrXscGA31tQn8Y2ecl-N5Hg",
+  authDomain: "mahall-bnk.firebaseapp.com",
+  projectId: "mahall-bnk",
+  storageBucket: "mahall-bnk.firebasestorage.app",
+  messagingSenderId: "364265261108",
+  appId: "1:364265261108:web:920e1480f91663c1b982fc"
 };
+
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
+export const auth = getAuth(app);
+export const storage = getStorage(app);
+
+export default app;
